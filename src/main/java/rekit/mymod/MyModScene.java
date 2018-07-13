@@ -31,6 +31,8 @@ import rekit.util.LambdaUtil;
  */
 public final class MyModScene extends LevelScene {
 
+    private static MyModScene instance;
+    
 	private MyModScene(GameModel model) {
 		super(model, LevelFactory.createLevel(LambdaUtil.invoke(MyModScene::getTestLevel)));
 		instance = this;
@@ -42,19 +44,9 @@ public final class MyModScene extends LevelScene {
 		return new LevelDefinition(res.getInputStream(), LevelType.Test);
 	}
 
-	
-	
-	
-	
-    private static MyModScene instance;
-    
-
     public static MyModScene getInstance(){
         return instance;
     }
-	
-	
-	
 	
 	/**
 	 * Create the scene by model and options
@@ -82,14 +74,8 @@ public final class MyModScene extends LevelScene {
 	@Override
 	public void start() {
 		super.start();
-
-		Pizza pizza = new Pizza(new Vec(12, 4));
-		this.addGameElement(pizza);
-		
-				
+	
 		this.addGameElement(new FlyingText(new Vec(11, 1), "Wann ist die SWT Klausur?"));
-
-		
 
 		BlockadeBox bb1 = new BlockadeBox(new Vec(20, 4));
 		BlockadeBox bb2 = new BlockadeBox(new Vec(20, 5));
@@ -119,6 +105,4 @@ public final class MyModScene extends LevelScene {
 		this.addGameElement(new AnswerBox(new Vec(14, 5), bbList, false));
 
 	}
-
-	
 }
