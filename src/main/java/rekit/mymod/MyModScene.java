@@ -74,14 +74,15 @@ public final class MyModScene extends LevelScene {
 	    super.init();
 	    // Change this to add a custom handler when the player attacks (space key)
 	    this.setAttackHandler((a) -> this.addGameElement(new FlyingText(this.getPlayer().getPos().addY(-1.5F), "Attack")));
+	    
+	    this.setOffsetWildCard(true);
+	    this.setCameraTarget(this.getPlayer());
 	  }
 
 	@Override
 	public void start() {
 		super.start();
 
-		setCameraTarget(new FixedCameraTarget(1));
-		
 		Pizza pizza = new Pizza(new Vec(12, 4));
 		this.addGameElement(pizza);
 		
@@ -118,7 +119,6 @@ public final class MyModScene extends LevelScene {
 		this.addGameElement(new AnswerBox(new Vec(14, 5), bbList, false));
 
 	}
-
 
 	
 }
