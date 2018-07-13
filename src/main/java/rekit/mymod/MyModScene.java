@@ -1,6 +1,10 @@
 package rekit.mymod;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
+import rekit.logic.gameelements.*;
+import rekit.logic.gameelements.inanimate.Inanimate;
 
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -12,11 +16,14 @@ import rekit.logic.level.LevelFactory;
 import rekit.logic.scene.LevelScene;
 import rekit.mymod.enemies.Pizza;
 import rekit.mymod.enemies.SpriteDummy;
+import rekit.mymod.inanimates.AnswerBox;
+import rekit.mymod.inanimates.BlockadeBox;
 import rekit.mymod.inanimates.FlyingText;
 import rekit.mymod.inanimates.ParticleDummy;
 import rekit.persistence.level.LevelDefinition;
 import rekit.persistence.level.LevelType;
 import rekit.primitives.geometry.Vec;
+import rekit.primitives.image.RGBAColor;
 import rekit.util.LambdaUtil;
 
 /**
@@ -26,6 +33,7 @@ public final class MyModScene extends LevelScene {
 
 	private MyModScene(GameModel model) {
 		super(model, LevelFactory.createLevel(LambdaUtil.invoke(MyModScene::getTestLevel)));
+		instance = this;
 	}
 
 	private static LevelDefinition getTestLevel() throws IOException {
@@ -34,6 +42,20 @@ public final class MyModScene extends LevelScene {
 		return new LevelDefinition(res.getInputStream(), LevelType.Test);
 	}
 
+	
+	
+	
+	
+    private static MyModScene instance;
+    
+
+    public static MyModScene getInstance(){
+        return instance;
+    }
+	
+	
+	
+	
 	/**
 	 * Create the scene by model and options
 	 *
@@ -57,34 +79,32 @@ public final class MyModScene extends LevelScene {
 	@Override
 	public void start() {
 		super.start();
-				
-		// Adding a GameElement to the scene can be done in two ways:
-		// 1)	Here in this scene, using the constructor
-		//		For develop and debug.
-		//		Can be helpful when GameElements need references to other GameElements
+		
 		Pizza pizza = new Pizza(new Vec(12, 4));
 		this.addGameElement(pizza);
 		
-		// 2)	Via the level generator
-		//		preferable, as you can design levels better this way.
-		// 		see the test level in resources/conf/mymod.dat
-		//		The level generator creates the GameElements like:
-		//		Pizza pizza = (Pizza) GameElementFactory.getPrototype("Pizza").create(new Vec(12, 4), String... options);
-		//		so make sure to parse any options in the create-methode, if required
-		
-		// Uncomment this to add a global color filter
-		// this.getModel().setFilter(Filter.get(LightFilter.class));
 				
 		
 		this.addGameElement(new FlyingText(new Vec(12, 2), "This is\nthe Pizza added\nin MyModScene"));
 		
-		this.addGameElement(new FlyingText(new Vec(36, 2), "SpriteDummy shows how\nto render Sprites"));
-		this.addGameElement(new SpriteDummy(new Vec(36, 5)));
+
+		BlockadeBox bb1 = new BlockadeBox(new Vec(20, 4));
+		BlockadeBox bb2 = new BlockadeBox(new Vec(20, 5));
+		BlockadeBox bb3 = new BlockadeBox(new Vec(20, 6));
+		BlockadeBox bb4 = new BlockadeBox(new Vec(20, 7));
+		this.addGameElement(bb1);
+		this.addGameElement(bb2);
+		this.addGameElement(bb3);
+		this.addGameElement(bb4);
 		
-		this.addGameElement(new FlyingText(new Vec(48, 2), "ParticleDummy shows how\nto use the\nParticleSpawner"));
-		this.addGameElement(new ParticleDummy(new Vec(48, 5)));
+		ArrayList<BlockadeBox> bbList = new ArrayList<BlockadeBox>();
+		bbList.add(bb1);
+		bbList.add(bb2);
+		bbList.add(bb3);
+		bbList.add(bb4);
 		
-		this.addGameElement(new FlyingText(new Vec(58, 2), "Enjoy the rest of\nthe level and then\nget started ;)"));
+		this.addGameElement(new AnswerBox(new Vec(2, 5), bbList));
+		
 	}
 	
 	
