@@ -79,13 +79,15 @@ public final class MyModScene extends LevelScene {
 	@Override
 	public void start() {
 		super.start();
+
+		setCameraTarget(new FixedCameraTarget(1));
 		
 		Pizza pizza = new Pizza(new Vec(12, 4));
 		this.addGameElement(pizza);
 		
 				
-		
-		this.addGameElement(new FlyingText(new Vec(12, 2), "This is\nthe Pizza added\nin MyModScene"));
+		this.addGameElement(new FlyingText(new Vec(11, 1), "Wann ist die SWT Klausur?"));
+
 		
 
 		BlockadeBox bb1 = new BlockadeBox(new Vec(20, 4));
@@ -102,10 +104,21 @@ public final class MyModScene extends LevelScene {
 		bbList.add(bb2);
 		bbList.add(bb3);
 		bbList.add(bb4);
-		
-		this.addGameElement(new AnswerBox(new Vec(2, 5), bbList));
-		
+
+		this.addGameElement(new FlyingText(new Vec(8, 4.7), "26. Juli"));
+		this.addGameElement(new AnswerBox(new Vec(8, 5), bbList, true));
+
+		this.addGameElement(new FlyingText(new Vec(10, 4.7), "5. Dezember?"));
+		this.addGameElement(new AnswerBox(new Vec(10, 5), bbList, false));
+
+		this.addGameElement(new FlyingText(new Vec(12, 4.7), "4. August"));
+		this.addGameElement(new AnswerBox(new Vec(12, 5), bbList, false));
+
+		this.addGameElement(new FlyingText(new Vec(14, 4.7), "20. September"));
+		this.addGameElement(new AnswerBox(new Vec(14, 5), bbList, false));
+
 	}
-	
+
+
 	
 }

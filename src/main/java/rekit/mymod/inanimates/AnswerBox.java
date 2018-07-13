@@ -6,6 +6,7 @@ import rekit.core.GameGrid;
 import rekit.logic.filters.Filter;
 import rekit.logic.gameelements.GameElement;
 import rekit.logic.gameelements.type.DynamicInanimate;
+import rekit.mymod.filter.TrueFilter;
 import rekit.mymod.inanimates.states.IdleState;
 import rekit.primitives.geometry.Direction;
 import rekit.primitives.geometry.Polygon;
@@ -22,22 +23,26 @@ public class AnswerBox extends DynamicInanimate {
 	private Polygon triangle;
 	private Vec startPos;
 	private ArrayList<BlockadeBox> blockadeBoxes;
+
+
+	private boolean isCorrectAnswer = false;
 	
 	private AnswerBox() {
 		super();
 		blockadeBoxes = new ArrayList<BlockadeBox>();
+		startPos = new Vec(0,0);
 	}
-	
-	public AnswerBox(Vec startPos, ArrayList<BlockadeBox> blockadeBoxes) {
-		super(startPos, new Vec(1), new RGBAColor(0,0,0,1));
 
-		this.startPos = startPos;
-		this.blockadeBoxes = blockadeBoxes;
-		
-		this.triangle = new Polygon(new Vec(), new Vec[] {
-				new Vec(-0.3, -0.5),
-				new Vec(0.3, -0.5)
-		});
+	private float animValue = -2f;
+	private boolean inJump = false;
+
+	public AnswerBox(Vec startPos, ArrayList<BlockadeBox> blockadeBoxes, boolean isCorrectAnswer) {
+
+        super(startPos, new Vec(1), new RGBAColor(0,0,0,1));
+        this.startPos = startPos;
+	    this.blockadeBoxes = blockadeBoxes;
+	    this.isCorrectAnswer = isCorrectAnswer;
+
 	}
 	
 	@Override
@@ -48,28 +53,60 @@ public class AnswerBox extends DynamicInanimate {
 	@Override
 	public void logicLoop() {
 		super.logicLoop();
-		this.setPos(getPos().add(getVel().scalar(deltaTime / 1000f)));
-	}
+
+        if(inJump && this.getPos().y  <= startPos.y){
+
+            animValue += (deltaTime / 1000f) * 4;
+
+            this.setVel(new Vec(0,velocityOverTime(animValue)));
+            this.setPos(getPos().add(getVel().scalar(deltaTime / 1000f)));
+        } else {
+            animValue = -2f;
+            inJump = false;
+            this.setVel(new Vec(0,0));
+            this.setPos(startPos);
+        }
+
+    }
 	
 	@Override
 	public void reactToCollision(GameElement element, Direction dir) {
 		super.reactToCollision(element, dir);
-		
-		MyModScene.getInstance().addGameElement(new FlyingText(startPos.addY(-1), "BOOM MUTHERFUCKER"));
-		for (BlockadeBox box : blockadeBoxes) {
-			box.destroy();
-		}
-		
-		MyModScene.getInstance().getModel().setFilter(Filter.get(WrooongFilter.class));
+
+		if (Math.abs(dir.getAngle() - 3.14d) <  0.1f ) {
+
+		    inJump = true;
+
+		    if(!isCorrectAnswer) {
+
+                MyModScene.getInstance().getModel().setFilter(Filter.get(WrooongFilter.class));
+                getScene().getPlayer().addDamage(100);
+                return;
+            }
+
+            for (BlockadeBox box : blockadeBoxes) {
+                box.destroy();
+            }
+
+            MyModScene.getInstance().getModel().setFilter(Filter.get(TrueFilter.class));
+
+        }
+
+
 	}
 	
 	@Override
 	public DynamicInanimate create(Vec startPos, String... options) {
-		return new AnswerBox(startPos, blockadeBoxes);
+		return new AnswerBox(startPos, blockadeBoxes, isCorrectAnswer);
 	}
 	
 	@Override
 	public Integer getZHint() {
 		return 1;
+	}
+
+
+	private double velocityOverTime(double animValue){
+		return (Math.pow(animValue, 3));
 	}
 }
