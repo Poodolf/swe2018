@@ -41,11 +41,10 @@ public class WrongAnswerParticles extends DynamicInanimate {
 	@Override
 	public void logicLoop() {
 		super.logicLoop();
-		sumTime += this.deltaTime;
-		if (sumTime >= 2000) {
-			sumTime = 0;
-			ps.spawn(getScene(), getPos());
-		}
+
+        ps.spawn(getScene(), getPos());
+        this.destroy();
+
 	}
 	
 	@Override
