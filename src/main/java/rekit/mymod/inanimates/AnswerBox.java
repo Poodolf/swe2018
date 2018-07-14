@@ -11,7 +11,8 @@ import rekit.primitives.image.RGBAColor;
 import rekit.util.ReflectUtils.LoadMe;
 
 import rekit.mymod.MyModScene;
-import rekit.mymod.enemies.Monster;
+import rekit.mymod.enemies.Jumper;
+import rekit.mymod.enemies.MonsterPizza;
 import rekit.mymod.pickups.ExtraLife;
 import rekit.mymod.pickups.GoodBoyCoin;
 
@@ -88,7 +89,6 @@ public class AnswerBox extends DynamicInanimate {
 
 		this.setVel(new Vec(0, Math.pow(animValue, 3)));
 		this.setPos(getPos().add(getVel().scalar(deltaTime / 1000f)));
-
 	}
 
 	private void explodeBlock() {
@@ -121,8 +121,9 @@ public class AnswerBox extends DynamicInanimate {
 
             // Wrong answer
         	
-        	// 80% chance for explosion 20% chance for monster spawn
-        	if ((Math.random() * 10) > 2) {
+        	double random = Math.random() * 10;
+        	// 60% chance for explosion 40% chance for monster spawn
+        	if ((random) >= 9) {
                 // Remove one of the players lives
                 getScene().getPlayer().setLives(getScene().getPlayer().getLives() - 1);
                 if (getScene().getPlayer().getLives() <= 0) {
@@ -131,10 +132,13 @@ public class AnswerBox extends DynamicInanimate {
                 }
                 // Spawn wrong answer particles
                 MyModScene.getInstance().addGameElement(new WrongAnswerParticles(myOldPos));
+                MyModScene.getInstance().addGameElement(new WrongAnswerParticles(getScene().getPlayer().getPos()));
+        	} if (random < 9 && random >= 8) {
+                MonsterPizza monsterPizza = new MonsterPizza(myOldPos);
+                getScene().addGameElement(monsterPizza);
         	} else {
-                Monster monster = new Monster(myOldPos);
-                getScene().addGameElement(monster);
-                
+        		Jumper jumper = new Jumper(myOldPos);
+        		getScene().addGameElement(jumper);
         	}
         }
 	}
