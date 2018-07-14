@@ -16,6 +16,8 @@ import rekit.mymod.inanimates.BlockadeBox;
 import rekit.mymod.inanimates.FlyingText;
 import rekit.mymod.quiz.Answer;
 import rekit.mymod.quiz.Question;
+import rekit.mymod.quiz.questgenerator.Quest;
+import rekit.mymod.quiz.questgenerator.MathQuestGenerator;
 import rekit.persistence.level.LevelDefinition;
 import rekit.persistence.level.LevelType;
 import rekit.primitives.geometry.Vec;
@@ -70,9 +72,27 @@ public final class MyModScene extends LevelScene {
 	public void start() {
 		super.start();
 		screenOffsetInBlocks = 0;
+		MathQuestGenerator mqs = new MathQuestGenerator();
 		
-		displayQuestion(new Question("Sag mal Ja", new Answer("nein"), new Answer("nein"), new Answer("nein"), new Answer("ja", true)));
-		displayQuestion(new Question("Whats nine plus ten?", new Answer("7"), new Answer("over 9000"), new Answer("42"), new Answer("21", true)));
+		Quest q1 = mqs.binearToDezimalQuest();
+		displayQuestion(new Question(q1.getFrage(), new Answer(q1.getAntwortT(), true), new Answer(q1.getAntwortF1()),
+				new Answer(q1.getAntwortF2()), new Answer(q1.getAntwortF3())));
+		
+		Quest q2 = mqs.determinantQuest();
+		displayQuestion(new Question(q2.getFrage(), new Answer(q2.getAntwortT(), true), new Answer(q2.getAntwortF1()),
+				new Answer(q2.getAntwortF2()), new Answer(q2.getAntwortF3())));
+		
+		Quest q3 = mqs.determinantQuest();
+		displayQuestion(new Question(q3.getFrage(), new Answer(q3.getAntwortT(), true), new Answer(q3.getAntwortF1()),
+				new Answer(q3.getAntwortF2()), new Answer(q3.getAntwortF3())));
+		
+		Quest q4 = mqs.determinantQuest();
+		displayQuestion(new Question(q4.getFrage(), new Answer(q4.getAntwortT(), true), new Answer(q4.getAntwortF1()),
+				new Answer(q4.getAntwortF2()), new Answer(q4.getAntwortF3())));
+		
+		Quest q5 = mqs.determinantQuest();
+		displayQuestion(new Question(q5.getFrage(), new Answer(q5.getAntwortT(), true), new Answer(q5.getAntwortF1()),
+				new Answer(q5.getAntwortF2()), new Answer(q5.getAntwortF3())));
 	}
 	
 	private int screenOffsetInBlocks = 0;
