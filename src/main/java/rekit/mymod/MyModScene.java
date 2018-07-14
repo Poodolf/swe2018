@@ -91,7 +91,10 @@ public final class MyModScene extends LevelScene {
 
 		ArrayList<BlockadeBox> blockadeList = new ArrayList<BlockadeBox>();
 		
-		for (int i = 0; i < 5; i++) {
+		//set blockadeheight
+		int blockadeheight = 7;
+		
+		for (int i = 0; i < blockadeheight; i++) {
 			BlockadeBox blockade = new BlockadeBox(new Vec(screenOffsetInBlocks + SCREEN_WIDTH_IN_BLOCKS, 7 - i));
 			blockadeList.add(blockade);
 			this.addGameElement(blockade);
