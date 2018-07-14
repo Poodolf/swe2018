@@ -6,10 +6,7 @@ import rekit.core.GameGrid;
 import rekit.logic.filters.Filter;
 import rekit.logic.gameelements.GameElement;
 import rekit.logic.gameelements.type.DynamicInanimate;
-import rekit.mymod.filter.TrueFilter;
-import rekit.mymod.inanimates.states.IdleState;
 import rekit.primitives.geometry.Direction;
-import rekit.primitives.geometry.Polygon;
 import rekit.primitives.geometry.Vec;
 import rekit.primitives.image.RGBAColor;
 import rekit.util.ReflectUtils.LoadMe;
@@ -20,12 +17,11 @@ import rekit.mymod.filter.WrooongFilter;
 @LoadMe
 public class AnswerBox extends DynamicInanimate {
 
-	private Polygon triangle;
 	private Vec startPos;
 	private ArrayList<BlockadeBox> blockadeBoxes;
-
-
 	private boolean isCorrectAnswer = false;
+	private float animValue = -2f;
+	private boolean inJump = false;
 	
 	private AnswerBox() {
 		super();
@@ -33,16 +29,11 @@ public class AnswerBox extends DynamicInanimate {
 		startPos = new Vec(0,0);
 	}
 
-	private float animValue = -2f;
-	private boolean inJump = false;
-
 	public AnswerBox(Vec startPos, ArrayList<BlockadeBox> blockadeBoxes, boolean isCorrectAnswer) {
-
         super(startPos, new Vec(1), new RGBAColor(0,0,0,1));
         this.startPos = startPos;
 	    this.blockadeBoxes = blockadeBoxes;
 	    this.isCorrectAnswer = isCorrectAnswer;
-
 	}
 	
 	@Override
@@ -66,7 +57,6 @@ public class AnswerBox extends DynamicInanimate {
             this.setVel(new Vec(0,0));
             this.setPos(startPos);
         }
-
     }
 	
 	@Override
@@ -78,21 +68,15 @@ public class AnswerBox extends DynamicInanimate {
 		    inJump = true;
 
 		    if(!isCorrectAnswer) {
-
-                MyModScene.getInstance().getModel().setFilter(Filter.get(WrooongFilter.class));
                 getScene().getPlayer().addDamage(100);
+                MyModScene.getInstance().getModel().setFilter(Filter.get(WrooongFilter.class));
                 return;
             }
 
             for (BlockadeBox box : blockadeBoxes) {
                 box.destroy();
             }
-
-            MyModScene.getInstance().getModel().setFilter(Filter.get(TrueFilter.class));
-
         }
-
-
 	}
 	
 	@Override
@@ -104,7 +88,6 @@ public class AnswerBox extends DynamicInanimate {
 	public Integer getZHint() {
 		return 1;
 	}
-
 
 	private double velocityOverTime(double animValue){
 		return (Math.pow(animValue, 3));
