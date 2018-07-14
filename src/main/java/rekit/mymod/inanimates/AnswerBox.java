@@ -45,17 +45,18 @@ public class AnswerBox extends DynamicInanimate {
 	public void logicLoop() {
 		super.logicLoop();
 
-        if(inJump && this.getPos().y  <= startPos.y){
+        if(inJump){
 
             animValue += (deltaTime / 1000f) * 4;
 
-            this.setVel(new Vec(0,velocityOverTime(animValue)));
-            this.setPos(getPos().add(getVel().scalar(deltaTime / 1000f)));
-        } else {
-            animValue = -2f;
-            inJump = false;
-            this.setVel(new Vec(0,0));
-            this.setPos(startPos);
+			updateVelocity(animValue);
+
+			if (getVel().y > 0) {
+				//The Block is moving back down -> Explode and play particles
+                explodeBlock();
+			}
+
+
         }
     }
 	
@@ -63,39 +64,12 @@ public class AnswerBox extends DynamicInanimate {
 	public void reactToCollision(GameElement element, Direction dir) {
 		super.reactToCollision(element, dir);
 
+		// Don't react to collisions if the block is already jumping
+		if (inJump) { return; }
+
 		if (Math.abs(dir.getAngle() - 3.14d) <  0.1f ) {
 
 		    inJump = true;
-
-		    // Destroy the answer block when it has been hit (but remember it's position so we can spawn particles there)
-		    Vec myOldPos = this.getPos();
-            this.destroy();
-            
-            // Right answer
-            if (isCorrectAnswer) {
-            	
-            	// Destroy blockade
-            	for (BlockadeBox box : blockadeBoxes) {
-                    box.destroy();
-                }
-            	
-            	// Spawn particle right answer effect
-                MyModScene.getInstance().addGameElement(new RightAnswerParticles(myOldPos));
-                
-                return;
-            }
-            
-            // Wrong answer
-            
-            // Remove one of the players lives
-            getScene().getPlayer().setLives(getScene().getPlayer().getLives() - 1);
-            if (getScene().getPlayer().getLives() <= 0) {
-            	// kill the player (for some reason that doesn't happen automatically)
-            	getScene().getPlayer().addDamage(9999);
-            }
-            
-            // Spawn wrong answer particles
-            MyModScene.getInstance().addGameElement(new WrongAnswerParticles(myOldPos));
         }
 	}
 	
@@ -109,7 +83,45 @@ public class AnswerBox extends DynamicInanimate {
 		return 1;
 	}
 
-	private double velocityOverTime(double animValue){
-		return (Math.pow(animValue, 3));
+	private void updateVelocity(double animValue){
+
+		this.setVel(new Vec(0, Math.pow(animValue, 3)));
+		this.setPos(getPos().add(getVel().scalar(deltaTime / 1000f)));
+
+	}
+
+	private void explodeBlock() {
+
+		// Destroy the answer block when it has been hit (but remember it's position so we can spawn particles there)
+		Vec myOldPos = this.getPos();
+		this.destroy();
+
+        if (isCorrectAnswer) {
+            // Right answer
+
+            // Destroy blockade
+            for (BlockadeBox box : blockadeBoxes) {
+                box.destroy();
+            }
+
+
+            // Spawn particle right answer effect
+            MyModScene.getInstance().addGameElement(new RightAnswerParticles(myOldPos));
+
+        } else {
+
+            // Wrong answer
+
+            // Remove one of the players lives
+            getScene().getPlayer().setLives(getScene().getPlayer().getLives() - 1);
+            if (getScene().getPlayer().getLives() <= 0) {
+                // kill the player (for some reason that doesn't happen automatically)
+                getScene().getPlayer().addDamage(9999);
+            }
+
+
+            // Spawn wrong answer particles
+            MyModScene.getInstance().addGameElement(new WrongAnswerParticles(myOldPos));
+        }
 	}
 }
