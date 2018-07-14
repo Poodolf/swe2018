@@ -1,5 +1,8 @@
 package rekit.mymod.quiz.questgenerator;
 
+import rekit.mymod.quiz.Answer;
+import rekit.mymod.quiz.Question;
+
 /**
  * Creates MathQuestions with answers
  * 
@@ -14,7 +17,7 @@ public class MathQuestGenerator {
 	/**
 	 * generates a 3 x 3 matrix determinant quest
 	 */
-	public Quest determinantQuest() {
+	public Question determinantQuest() {
 		
 		int[][] matrix = matrixGenerator(3, 3, 5);
 		String matrixS = "";
@@ -29,16 +32,17 @@ public class MathQuestGenerator {
 		String frage = "Was ist die determinante von: "  + '\n' + matrixS;
 		int solution = determinantCalc(matrix);
 		int[] falseanswer = generateFalseanswer(solution, true, 2, 2, 3);
-		
-		Quest mathQuest = new Quest(frage, Integer.toString(solution), Integer.toString(falseanswer[0]),
-				  Integer.toString(falseanswer[1]), Integer.toString(falseanswer[2]));
-		return mathQuest;
+		Question mathQuestion = new Question(frage, new Answer(Integer.toString(solution), true), 
+				new Answer(Integer.toString(falseanswer[0])), 
+				new Answer(Integer.toString(falseanswer[1])),
+				new Answer(Integer.toString(falseanswer[2])));
+		return mathQuestion;
 	}
 	
 	/**
 	 * generates an 8-Bit two's complement to decimal quest
 	 */
-	public Quest binearToDezimalQuest() {
+	public Question binearToDezimalQuest() {
 		
 		String eightBit = "";
 		for (int i = 0; i < 8; i++) {
@@ -47,9 +51,11 @@ public class MathQuestGenerator {
 		String frage = "Wandeln Sie folgende Zweierkomplement in Dezimal-System um " + '\n' + eightBit;
 		int solution = binearToDezimalCalc(eightBit);
 		int[] falseanswer = generateFalseanswer(solution, false, 2, 2, 3);
-		Quest mathQuest = new Quest(frage, Integer.toString(solution), Integer.toString(falseanswer[0]),
-				  Integer.toString(falseanswer[1]), Integer.toString(falseanswer[2]));
-		return mathQuest;
+		Question mathQuestion = new Question(frage, new Answer(Integer.toString(solution), true), 
+                new Answer(Integer.toString(falseanswer[0])), 
+                new Answer(Integer.toString(falseanswer[1])),
+                new Answer(Integer.toString(falseanswer[2])));
+		return mathQuestion;
 	}
 	
 	/**

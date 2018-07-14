@@ -16,7 +16,6 @@ import rekit.mymod.inanimates.BlockadeBox;
 import rekit.mymod.inanimates.FlyingText;
 import rekit.mymod.quiz.Answer;
 import rekit.mymod.quiz.Question;
-import rekit.mymod.quiz.questgenerator.Quest;
 import rekit.mymod.quiz.questgenerator.MathQuestGenerator;
 import rekit.persistence.level.LevelDefinition;
 import rekit.persistence.level.LevelType;
@@ -74,25 +73,9 @@ public final class MyModScene extends LevelScene {
 		screenOffsetInBlocks = 0;
 		MathQuestGenerator mqs = new MathQuestGenerator();
 		
-		Quest q1 = mqs.binearToDezimalQuest();
-		displayQuestion(new Question(q1.getFrage(), new Answer(q1.getAntwortT(), true), new Answer(q1.getAntwortF1()),
-				new Answer(q1.getAntwortF2()), new Answer(q1.getAntwortF3())));
-		
-		Quest q2 = mqs.determinantQuest();
-		displayQuestion(new Question(q2.getFrage(), new Answer(q2.getAntwortT(), true), new Answer(q2.getAntwortF1()),
-				new Answer(q2.getAntwortF2()), new Answer(q2.getAntwortF3())));
-		
-		Quest q3 = mqs.determinantQuest();
-		displayQuestion(new Question(q3.getFrage(), new Answer(q3.getAntwortT(), true), new Answer(q3.getAntwortF1()),
-				new Answer(q3.getAntwortF2()), new Answer(q3.getAntwortF3())));
-		
-		Quest q4 = mqs.determinantQuest();
-		displayQuestion(new Question(q4.getFrage(), new Answer(q4.getAntwortT(), true), new Answer(q4.getAntwortF1()),
-				new Answer(q4.getAntwortF2()), new Answer(q4.getAntwortF3())));
-		
-		Quest q5 = mqs.determinantQuest();
-		displayQuestion(new Question(q5.getFrage(), new Answer(q5.getAntwortT(), true), new Answer(q5.getAntwortF1()),
-				new Answer(q5.getAntwortF2()), new Answer(q5.getAntwortF3())));
+		displayQuestion(mqs.determinantQuest());
+		displayQuestion(mqs.binearToDezimalQuest());
+		displayQuestion(mqs.binearToDezimalQuest());
 	}
 	
 	private int screenOffsetInBlocks = 0;
