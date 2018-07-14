@@ -3,9 +3,6 @@ package rekit.mymod;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import rekit.logic.gameelements.*;
-import rekit.logic.gameelements.inanimate.Inanimate;
-
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
@@ -14,16 +11,14 @@ import rekit.logic.GameModel;
 import rekit.logic.ILevelScene;
 import rekit.logic.level.LevelFactory;
 import rekit.logic.scene.LevelScene;
-import rekit.mymod.enemies.Pizza;
-import rekit.mymod.enemies.SpriteDummy;
 import rekit.mymod.inanimates.AnswerBox;
 import rekit.mymod.inanimates.BlockadeBox;
 import rekit.mymod.inanimates.FlyingText;
-import rekit.mymod.inanimates.ParticleDummy;
+import rekit.mymod.quiz.Answer;
+import rekit.mymod.quiz.Question;
 import rekit.persistence.level.LevelDefinition;
 import rekit.persistence.level.LevelType;
 import rekit.primitives.geometry.Vec;
-import rekit.primitives.image.RGBAColor;
 import rekit.util.LambdaUtil;
 
 /**
@@ -62,47 +57,52 @@ public final class MyModScene extends LevelScene {
 	}
 
 	@Override
-	  public void init() {
+	public void init() {
 	    super.init();
 	    // Change this to add a custom handler when the player attacks (space key)
 	    this.setAttackHandler((a) -> this.addGameElement(new FlyingText(this.getPlayer().getPos().addY(-1.5F), "Attack")));
 	    
 	    this.setOffsetWildCard(true);
 	    this.setCameraTarget(this.getPlayer());
-	  }
+	}
 
 	@Override
 	public void start() {
 		super.start();
-	
-		this.addGameElement(new FlyingText(new Vec(11, 1), "Wann ist die SWT Klausur?"));
-
-		BlockadeBox bb1 = new BlockadeBox(new Vec(20, 4));
-		BlockadeBox bb2 = new BlockadeBox(new Vec(20, 5));
-		BlockadeBox bb3 = new BlockadeBox(new Vec(20, 6));
-		BlockadeBox bb4 = new BlockadeBox(new Vec(20, 7));
-		this.addGameElement(bb1);
-		this.addGameElement(bb2);
-		this.addGameElement(bb3);
-		this.addGameElement(bb4);
+		screenOffsetInBlocks = 0;
 		
-		ArrayList<BlockadeBox> bbList = new ArrayList<BlockadeBox>();
-		bbList.add(bb1);
-		bbList.add(bb2);
-		bbList.add(bb3);
-		bbList.add(bb4);
+		displayQuestion(new Question("Sag mal Ja", new Answer("nein"), new Answer("nein"), new Answer("nein"), new Answer("ja", true)));
+		displayQuestion(new Question("Whats nine plus ten?", new Answer("7"), new Answer("over 9000"), new Answer("42"), new Answer("21", true)));
+	}
+	
+	private int screenOffsetInBlocks = 0;
+	private static final int SCREEN_WIDTH_IN_BLOCKS = 24;
+	private static final double ANSWER_Y_POSITION = 4.7;
+	private static final double ANSWER_BLOCK_Y_POSITION = 5;
+	private static final int SPACE_BETWEEN_ANSWERS = 3;
+	private static final int FIRST_ANSWER_POSITION = 8;
+	private static final double QUESTION_Y_POSITION = 2;
+	
+	public void displayQuestion(Question question) {
+		this.addGameElement(new FlyingText(new Vec(screenOffsetInBlocks + SCREEN_WIDTH_IN_BLOCKS / 2, QUESTION_Y_POSITION), question.getText()));
 
-		this.addGameElement(new FlyingText(new Vec(8, 4.7), "26. Juli"));
-		this.addGameElement(new AnswerBox(new Vec(8, 5), bbList, true));
-
-		this.addGameElement(new FlyingText(new Vec(10, 4.7), "5. Dezember?"));
-		this.addGameElement(new AnswerBox(new Vec(10, 5), bbList, false));
-
-		this.addGameElement(new FlyingText(new Vec(12, 4.7), "4. August"));
-		this.addGameElement(new AnswerBox(new Vec(12, 5), bbList, false));
-
-		this.addGameElement(new FlyingText(new Vec(14, 4.7), "20. September"));
-		this.addGameElement(new AnswerBox(new Vec(14, 5), bbList, false));
-
+		ArrayList<BlockadeBox> blockadeList = new ArrayList<BlockadeBox>();
+		
+		for (int i = 0; i < 5; i++) {
+			BlockadeBox blockade = new BlockadeBox(new Vec(screenOffsetInBlocks + SCREEN_WIDTH_IN_BLOCKS, 7 - i));
+			blockadeList.add(blockade);
+			this.addGameElement(blockade);
+		}
+		
+		int extraOffset = FIRST_ANSWER_POSITION;
+		
+		for (Answer answer : question.getShuffledAnswers()) {
+			int xPos = screenOffsetInBlocks + extraOffset;
+			this.addGameElement(new FlyingText(new Vec(xPos, ANSWER_Y_POSITION), answer.getText()));
+			this.addGameElement(new AnswerBox(new Vec(xPos, ANSWER_BLOCK_Y_POSITION), blockadeList, answer.isRight()));
+			extraOffset += SPACE_BETWEEN_ANSWERS;
+		}
+		
+		screenOffsetInBlocks += SCREEN_WIDTH_IN_BLOCKS;
 	}
 }
