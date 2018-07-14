@@ -27,7 +27,7 @@ public class FlyingText extends DynamicInanimate {
 	public FlyingText(Vec startPos, String text) {
 		super(startPos, new Vec(1, 1), new RGBAColor(210, 80, 40));
 		this.text = text;
-		this.textOptions = new TextOptions(new Vec(-0.5f, -2), 20, color, GameConf.GAME_TEXT_FONT, 0);
+		this.textOptions = new TextOptions(new Vec(-0.5f, -2), 20, color, GameConf.GAME_TEXT_FONT, 1);
 		
 		this.triangle = new Polygon(getPos().add(new Vec(0, 1.4f)), new Vec[] {
 				new Vec(-0.2, -0.4),

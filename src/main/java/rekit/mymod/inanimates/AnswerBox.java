@@ -3,7 +3,6 @@ package rekit.mymod.inanimates;
 import java.util.ArrayList;
 
 import rekit.core.GameGrid;
-import rekit.logic.filters.Filter;
 import rekit.logic.gameelements.GameElement;
 import rekit.logic.gameelements.type.DynamicInanimate;
 import rekit.primitives.geometry.Direction;
@@ -12,7 +11,9 @@ import rekit.primitives.image.RGBAColor;
 import rekit.util.ReflectUtils.LoadMe;
 
 import rekit.mymod.MyModScene;
-import rekit.mymod.filter.WrooongFilter;
+import rekit.mymod.enemies.Monster;
+import rekit.mymod.pickups.ExtraLife;
+import rekit.mymod.pickups.GoodBoyCoin;
 
 @LoadMe
 public class AnswerBox extends DynamicInanimate {
@@ -104,6 +105,14 @@ public class AnswerBox extends DynamicInanimate {
                 box.destroy();
             }
 
+            // 90% chance for normal coin 10% for extra health
+            if ((Math.random() * 10) > 1) {
+                GoodBoyCoin goodBoyCoin = new GoodBoyCoin(myOldPos);
+                getScene().addGameElement(goodBoyCoin);
+            } else {
+                ExtraLife extraLife = new ExtraLife(myOldPos);
+                getScene().addGameElement(extraLife);
+            }
 
             // Spawn particle right answer effect
             MyModScene.getInstance().addGameElement(new RightAnswerParticles(myOldPos));
@@ -111,17 +120,22 @@ public class AnswerBox extends DynamicInanimate {
         } else {
 
             // Wrong answer
-
-            // Remove one of the players lives
-            getScene().getPlayer().setLives(getScene().getPlayer().getLives() - 1);
-            if (getScene().getPlayer().getLives() <= 0) {
-                // kill the player (for some reason that doesn't happen automatically)
-                getScene().getPlayer().addDamage(9999);
-            }
-
-
-            // Spawn wrong answer particles
-            MyModScene.getInstance().addGameElement(new WrongAnswerParticles(myOldPos));
+        	
+        	// 80% chance for explosion 20% chance for monster spawn
+        	if ((Math.random() * 10) > 2) {
+                // Remove one of the players lives
+                getScene().getPlayer().setLives(getScene().getPlayer().getLives() - 1);
+                if (getScene().getPlayer().getLives() <= 0) {
+                    // kill the player (for some reason that doesn't happen automatically)
+                    getScene().getPlayer().addDamage(9999);
+                }
+                // Spawn wrong answer particles
+                MyModScene.getInstance().addGameElement(new WrongAnswerParticles(myOldPos));
+        	} else {
+                Monster monster = new Monster(myOldPos);
+                getScene().addGameElement(monster);
+                
+        	}
         }
 	}
 }

@@ -75,6 +75,11 @@ public final class MyModScene extends LevelScene {
 		
 		displayQuestion(mqs.determinantQuest());
 		displayQuestion(mqs.binearToDezimalQuest());
+		displayQuestion(mqs.determinantQuest());
+		displayQuestion(mqs.binearToDezimalQuest());
+		displayQuestion(mqs.determinantQuest());
+		displayQuestion(mqs.binearToDezimalQuest());
+		displayQuestion(mqs.determinantQuest());
 		displayQuestion(mqs.binearToDezimalQuest());
 	}
 	
@@ -92,7 +97,7 @@ public final class MyModScene extends LevelScene {
 		ArrayList<BlockadeBox> blockadeList = new ArrayList<BlockadeBox>();
 		
 		//set blockadeheight
-		int blockadeheight = 7;
+		int blockadeheight = 8;
 		
 		for (int i = 0; i < blockadeheight; i++) {
 			BlockadeBox blockade = new BlockadeBox(new Vec(screenOffsetInBlocks + SCREEN_WIDTH_IN_BLOCKS, 7 - i));

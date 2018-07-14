@@ -32,7 +32,7 @@ public class BlockadeBox extends DynamicInanimate {
 	
 	@Override
 	public void internalRender(GameGrid f) {
-		f.drawImage(this.getPos(), this.getSize(), "custom/plasmablockade.png", true, true, false, false);
+		f.drawImage(this.getPos(), this.getSize(), "trinity/laserwall_100.png", true, true, false, false);
 	}
 	
 	@Override
