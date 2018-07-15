@@ -59,6 +59,24 @@ public class MathQuestGenerator {
 	}
 	
 	/**
+	 * generates multiplication task with n big numbers
+	 * @param n
+	 * @return
+	 */
+	public Question kinderGartenQuest(int n) {
+		int num1 = (int) (Math.random() * n);
+		int num2 = (int) (Math.random() * n);
+		String frage = "Wie ist das Produkt der Multiplikation" + '\n' + num1 + " * " + num2;
+		int solution = num1 * num2;
+		int[] falseanswer = generateFalseanswer(solution, false, 1, 2, 2);
+		Question mathQuestion = new Question(frage, new Answer(Integer.toString(solution), true), 
+                new Answer(Integer.toString(falseanswer[0])), 
+                new Answer(Integer.toString(falseanswer[1])),
+                new Answer(Integer.toString(falseanswer[2])));
+		return mathQuestion;
+	}
+	
+	/**
 	 * generates an n x m matrix with the random numbers from 0 to difficulty
 	 * @param n number of rows
 	 * @param m number of columns

@@ -69,6 +69,9 @@ public final class MyModScene extends LevelScene {
 		screenOffsetInBlocks = 0;
 		MathQuestGenerator mqs = new MathQuestGenerator();
 
+		displayQuestion(mqs.kinderGartenQuest(100));
+		displayQuestion(mqs.kinderGartenQuest(1000));
+		displayQuestion(mqs.kinderGartenQuest(10000));
 		displayQuestion(mqs.binearToDezimalQuest());
 		displayQuestion(mqs.binearToDezimalQuest());
 		displayQuestion(mqs.binearToDezimalQuest());
