@@ -105,7 +105,7 @@ public class AnswerBox extends DynamicInanimate {
                 box.destroy();
             }
 
-            // 90% chance for normal coin 10% for extra health
+            // 90% for normal coin 10% extra health
             if ((Math.random() * 10) > 1) {
                 GoodBoyCoin goodBoyCoin = new GoodBoyCoin(myOldPos);
                 getScene().addGameElement(goodBoyCoin);
@@ -122,8 +122,8 @@ public class AnswerBox extends DynamicInanimate {
             // Wrong answer
         	
         	double random = Math.random() * 10;
-        	// 60% chance for explosion 40% chance for monster spawn
-        	if ((random) >= 9) {
+        	// 30% for explosion 10% for monsterPizza 60% for jumper
+        	if ((random) >= 7) {
                 // Remove one of the players lives
                 getScene().getPlayer().setLives(getScene().getPlayer().getLives() - 1);
                 if (getScene().getPlayer().getLives() <= 0) {
@@ -133,7 +133,7 @@ public class AnswerBox extends DynamicInanimate {
                 // Spawn wrong answer particles
                 MyModScene.getInstance().addGameElement(new WrongAnswerParticles(myOldPos));
                 MyModScene.getInstance().addGameElement(new WrongAnswerParticles(getScene().getPlayer().getPos()));
-        	} if (random < 9 && random >= 8) {
+        	} if (random < 7 && random >= 8) {
                 MonsterPizza monsterPizza = new MonsterPizza(myOldPos);
                 getScene().addGameElement(monsterPizza);
         	} else {
