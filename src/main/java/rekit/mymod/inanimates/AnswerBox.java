@@ -107,11 +107,9 @@ public class AnswerBox extends DynamicInanimate {
 
             // 90% for normal coin 10% extra health
             if ((Math.random() * 10) > 1) {
-                GoodBoyCoin goodBoyCoin = new GoodBoyCoin(myOldPos);
-                getScene().addGameElement(goodBoyCoin);
+                getScene().addGameElement(new GoodBoyCoin(myOldPos));
             } else {
-                ExtraLife extraLife = new ExtraLife(myOldPos);
-                getScene().addGameElement(extraLife);
+                getScene().addGameElement(new ExtraLife(myOldPos));
             }
 
             // Spawn particle right answer effect
@@ -123,7 +121,7 @@ public class AnswerBox extends DynamicInanimate {
         	
         	double random = Math.random() * 10;
         	// 30% for explosion 10% for monsterPizza 60% for jumper
-        	if ((random) >= 7) {
+        	if (random >= 7) {
                 // Remove one of the players lives
                 getScene().getPlayer().setLives(getScene().getPlayer().getLives() - 1);
                 if (getScene().getPlayer().getLives() <= 0) {
@@ -133,12 +131,26 @@ public class AnswerBox extends DynamicInanimate {
                 // Spawn wrong answer particles
                 MyModScene.getInstance().addGameElement(new WrongAnswerParticles(myOldPos));
                 MyModScene.getInstance().addGameElement(new WrongAnswerParticles(getScene().getPlayer().getPos()));
-        	} if (random < 7 && random >= 8) {
-                MonsterPizza monsterPizza = new MonsterPizza(myOldPos);
-                getScene().addGameElement(monsterPizza);
-        	} else {
-        		Jumper jumper = new Jumper(myOldPos);
-        		getScene().addGameElement(jumper);
+        	} 
+        	else if (random < 7 && random >= 6) {
+        		getScene().addGameElement(new MonsterPizza(new Vec(myOldPos.x -3, myOldPos.y)));
+        		getScene().addGameElement(new MonsterPizza(new Vec(myOldPos.x -2, myOldPos.y)));
+        		getScene().addGameElement(new MonsterPizza(new Vec(myOldPos.x -1, myOldPos.y)));
+        		getScene().addGameElement(new MonsterPizza(myOldPos));
+        		getScene().addGameElement(new MonsterPizza(new Vec(myOldPos.x +1, myOldPos.y)));
+        		getScene().addGameElement(new MonsterPizza(new Vec(myOldPos.x +2, myOldPos.y)));
+        		getScene().addGameElement(new MonsterPizza(new Vec(myOldPos.x +3, myOldPos.y)));
+        	} 
+        	
+        	else if (random < 6 && random >= 5) {
+        		getScene().addGameElement(new Jumper(new Vec(myOldPos.x -2, myOldPos.y)));
+        		getScene().addGameElement(new Jumper(new Vec(myOldPos.x -1, myOldPos.y)));
+        		getScene().addGameElement(new Jumper(myOldPos));
+        		getScene().addGameElement(new Jumper(new Vec(myOldPos.x +1, myOldPos.y)));
+        		getScene().addGameElement(new Jumper(new Vec(myOldPos.x +2, myOldPos.y)));
+        	}
+        	else {
+        		getScene().addGameElement(new Jumper(myOldPos));
         	}
         }
 	}

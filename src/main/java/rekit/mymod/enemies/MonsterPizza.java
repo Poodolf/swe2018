@@ -14,8 +14,6 @@ import rekit.util.ReflectUtils.LoadMe;
 
 /**
  * Enemy who chases the player and jumps a little bit
- *
- * @author Angelo Aracri
  */
 @LoadMe
 public final class MonsterPizza extends Enemy {			
@@ -128,7 +126,7 @@ public final class MonsterPizza extends Enemy {
 			x = -7.0f;
 		}
 		if (getScene().getPlayer().getPos().y < this.getPos().y) {
-			y = -6.0f;
+			y = -7.0f;
 		}
 		this.setVel(new Vec(x , y));
 	}

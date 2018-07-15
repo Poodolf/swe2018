@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
-import rekit.config.GameConf;
 import rekit.logic.GameModel;
 import rekit.logic.ILevelScene;
 import rekit.logic.level.LevelFactory;
@@ -23,7 +22,7 @@ import rekit.primitives.geometry.Vec;
 import rekit.util.LambdaUtil;
 
 /**
- * A test scene which can be used in {@link GameConf#DEBUG} context.
+ * A small level with 3 two's complement and 3 determinant questions
  */
 public final class MyModScene extends LevelScene {
 
@@ -69,17 +68,13 @@ public final class MyModScene extends LevelScene {
 		super.start();
 		screenOffsetInBlocks = 0;
 		MathQuestGenerator mqs = new MathQuestGenerator();
-		
-		displayQuestion(new Question("Es steht eine pull request aus" + '\n' + "was wirst du tuen?", new Answer("annehmen", true), 
-				new Answer("ablehnen"), new Answer("ignorieren"), new Answer("kacken")));
-		displayQuestion(mqs.determinantQuest());
+
+		displayQuestion(mqs.binearToDezimalQuest());
+		displayQuestion(mqs.binearToDezimalQuest());
 		displayQuestion(mqs.binearToDezimalQuest());
 		displayQuestion(mqs.determinantQuest());
-		displayQuestion(mqs.binearToDezimalQuest());
 		displayQuestion(mqs.determinantQuest());
-		displayQuestion(mqs.binearToDezimalQuest());
 		displayQuestion(mqs.determinantQuest());
-		displayQuestion(mqs.binearToDezimalQuest());
 	}
 	
 	private int screenOffsetInBlocks = 0;
