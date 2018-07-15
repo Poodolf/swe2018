@@ -73,6 +73,8 @@ public final class MyModScene extends LevelScene {
 		screenOffsetInBlocks = 0;
 		MathQuestGenerator mqs = new MathQuestGenerator();
 		
+		displayQuestion(new Question("Es steht eine pull request aus" + '\n' + "was wirst du tuen?", new Answer("annehmen", true), 
+				new Answer("ablehnen"), new Answer("ignorieren"), new Answer("kacken")));
 		displayQuestion(mqs.determinantQuest());
 		displayQuestion(mqs.binearToDezimalQuest());
 		displayQuestion(mqs.determinantQuest());

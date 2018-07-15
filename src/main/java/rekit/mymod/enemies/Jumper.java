@@ -1,7 +1,5 @@
 package rekit.mymod.enemies;
 
-import java.util.Random;
-
 import rekit.core.GameGrid;
 import rekit.logic.gameelements.GameElement;
 import rekit.logic.gameelements.type.Enemy;
@@ -17,8 +15,6 @@ import rekit.util.ReflectUtils.LoadMe;
  */
 @LoadMe
 public final class Jumper extends Enemy {			
-
-	private static final int POINTS = 0;
 	
 	private float x = 0.0f;
 	private float y = 0.0f;
@@ -49,44 +45,25 @@ public final class Jumper extends Enemy {
 	@Override
 	protected void innerLogicLoop() {
 		super.innerLogicLoop();
-//		if (getScene().getPlayer().getPos().x > this.getPos().x) {
-//			this.currentAngle += this.deltaTime * -Jumper.ANGLE_SPEED;
-//		} else {
-//			this.currentAngle += this.deltaTime * Jumper.ANGLE_SPEED;
-//		}
 	}
 
 	@Override
 	public void reactToCollision(GameElement element, Direction dir) {
-		// Only continue if the element is hostile to the enemy
-		// (meaning element is Player)
 		if (!this.getTeam().isHostile(element.getTeam())) {
 			return;
 		}
-
-		// If hit from above:
 		if (dir == Direction.UP) {
-			// give the player points
-			this.getScene().getPlayer().addPoints(Jumper.POINTS);
-			// Let the player jump 
 			element.killBoost();
-			// kill the enemy
 			this.addDamage(1);
 		} else {
-			// Touched dangerous side
-			// Give player damage
 			element.addDamage(1);
-			// Kill the enemy itself
-			this.destroy();
 		}
 	}
 
 	@Override
 	public void collidedWithSolid(Frame collision, Direction dir) {
-		// standard behavior, that prevents clipping into other blocks
-		super.collidedWithSolid(collision, dir);
 		
-
+		super.collidedWithSolid(collision, dir);
 		if (getScene().getPlayer().getPos().x > this.getPos().x) {
 			x = 7.0f;
 		} else {

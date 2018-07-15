@@ -8,6 +8,9 @@ import rekit.util.ReflectUtils.LoadMe;
 
 /**
  * An extra life which has a value of [0,300] and a life.
+ * 
+ * @author Jianan
+ *
  */
 @LoadMe
 public class ExtraLife extends Pickup {
